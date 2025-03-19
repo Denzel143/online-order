@@ -33,7 +33,7 @@
     #menuSection {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 30px; /* Jarak antar kotak */
+      gap: 30px; /* Jarak antar kotak menu */
       margin-top: 20px;
     }
     .menuButton {
@@ -70,16 +70,12 @@
       font-weight: bold;
       font-size: 18px;
     }
-    /* Halaman Order Summary dibagi menjadi dua bagian */
-    #orderSummary {
-      display: none;
-    }
+    /* Halaman Order Summary (Pesananmu) */
+    #orderSummary { display: none; }
     #orderContent, #emptyMessage {
       padding: 20px;
     }
-    #emptyMessage {
-      text-align: center;
-    }
+    #emptyMessage { text-align: center; }
     /* Halaman Konfirmasi Pesanan */
     #paymentResultPage {
       text-align: center;
@@ -90,14 +86,14 @@
       margin-bottom: 10px;
       font-size: 18px;
     }
-    /* Tombol Kembali (di halaman selain Menu) */
+    /* Tombol Kembali */
     .backBtn {
       background-color: #ddd;
       color: #000;
       border: none;
       margin-top: 10px;
     }
-    /* Tombol Pesananmu Fixed di bawah layar */
+    /* Tombol Pesananmu Fixed */
     #btnViewOrderFixed {
       position: fixed;
       bottom: 10px;
@@ -158,10 +154,19 @@
   
   <!-- Halaman 2: Menu -->
   <div id="menuSection" style="display:none;">
-    <div class="menuButton" onclick="selectMenu('Menu 1', 10000)">Menu 1<br>Rp. 10.000</div>
-    <div class="menuButton" onclick="selectMenu('Menu 2', 15000)">Menu 2<br>Rp. 15.000</div>
-    <div class="menuButton" onclick="selectMenu('Menu 3', 20000)">Menu 3<br>Rp. 20.000</div>
-    <div class="menuButton" onclick="selectMenu('Menu 4', 25000)">Menu 4<br>Rp. 25.000</div>
+    <div class="menuButton" onclick="selectMenu('Bubur Ayam Jamur Hioko 1 porsi', 14000)">Bubur Ayam Jamur Hioko 1 porsi<br>Rp. 14.000</div>
+    <div class="menuButton" onclick="selectMenu('Bubur Ayam Jamur Hioko 1/2 porsi', 10000)">Bubur Ayam Jamur Hioko 1/2 porsi<br>Rp. 10.000</div>
+    <div class="menuButton" onclick="selectMenu('Nasi Tim Ayam Jamur Hioko', 14000)">Nasi Tim Ayam Jamur Hioko<br>Rp. 14.000</div>
+    <div class="menuButton" onclick="selectMenu('Tahu Bakso Ayam', 4000)">Tahu Bakso Ayam<br>Rp. 4.000</div>
+    <div class="menuButton" onclick="selectMenu('Siomay Ayam', 7000)">Siomay Ayam<br>Rp. 7.000</div>
+    <div class="menuButton" onclick="selectMenu('Cakwe', 1500)">Cakwe<br>Rp. 1.500</div>
+    <div class="menuButton" onclick="selectMenu('Telor Pindang Coklat', 4000)">Telor Pindang Coklat<br>Rp. 4.000</div>
+    <div class="menuButton" onclick="selectMenu('Pangsit', 1000)">Pangsit<br>Rp. 1.000</div>
+    <div class="menuButton" onclick="selectMenu('KAJOL', 7000)">KAJOL<br>Rp. 7.000</div>
+    <div class="menuButton" onclick="selectMenu('Buah Lo Han Kuo', 15000)">Buah Lo Han Kuo<br>Rp. 15.000</div>
+    <div class="menuButton" onclick="selectMenu('Emping Rasa Manis', 20000)">Emping Rasa Manis<br>Rp. 20.000</div>
+    <div class="menuButton" onclick="selectMenu('Emping Rasa Pedas Manis', 20000)">Emping Rasa Pedas Manis<br>Rp. 20.000</div>
+    <div class="menuButton" onclick="selectMenu('Emping Rasa Bawang', 20000)">Emping Rasa Bawang<br>Rp. 20.000</div>
   </div>
   
   <!-- Halaman 3: Order Input -->
@@ -225,7 +230,7 @@
       });
       const target = document.getElementById(pageId);
       if (target) target.style.display = "block";
-      // Jika masuk ke Order Summary atau Payment Result, pastikan tombol fixed disembunyikan.
+      // Jika kita masuk ke Order Summary atau Payment Result, pastikan tombol fixed tidak muncul.
       if (pageId === "orderSummary" || pageId === "paymentResultPage") {
         document.getElementById("btnViewOrderFixed").style.display = "none";
       } else {
@@ -235,7 +240,7 @@
 
     function updatePesananButton() {
       const btn = document.getElementById("btnViewOrderFixed");
-      // Jika Order Summary atau Payment Result sedang aktif, jangan tampilkan tombol fixed.
+      // Jangan tampilkan tombol jika di halaman Order Summary atau Payment Result
       const currentPage = pages.find(id => document.getElementById(id).style.display === "block");
       if (currentPage === "orderSummary" || currentPage === "paymentResultPage") {
         btn.style.display = "none";
@@ -308,7 +313,6 @@
       const tbody = document.getElementById("orderTable");
       tbody.innerHTML = "";
       if (orders.length === 0) {
-        // Jika tidak ada pesanan, sembunyikan orderContent dan tampilkan emptyMessage.
         document.getElementById("orderContent").style.display = "none";
         document.getElementById("emptyMessage").style.display = "block";
         return;
@@ -382,7 +386,6 @@
       showPage("paymentResultPage");
     }
 
-    // Fungsi untuk tombol "Kembali" di halaman Ringkasan Pesanan
     function backToMenuFromSummary() {
       showPage("menuSection");
       updatePesananButton();
