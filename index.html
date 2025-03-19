@@ -5,7 +5,9 @@
   <title>Pesanan Makanan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    /* Tambahkan background-color kuning untuk seluruh laman */
     body {
+      background-color: #FFFFFF; /* Contoh warna kuning lembut (LemonChiffon) */
       font-family: Arial, sans-serif;
       margin: 20px;
     }
@@ -33,7 +35,7 @@
     #menuSection {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 30px;
+      gap: 30px; /* jarak antar kotak menu */
       margin-top: 20px;
     }
     .menuButton {
@@ -111,7 +113,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
   <script>
-    // Konfigurasi Firebase
+    // Konfigurasi Firebase (ganti dengan data milik Anda)
     const firebaseConfig = {
       apiKey: "AIzaSyAdll4RHL16rMkXGzDKNBHBIZciYAGO1DA",
       authDomain: "order-online-664a8.firebaseapp.com",
@@ -151,9 +153,9 @@
   <!-- Div untuk menampilkan opsi yang dipilih -->
   <div id="selectedOption" style="display:none; font-size:20px; font-weight:bold; margin-bottom:20px;"></div>
   
-  <!-- Halaman 2: Menu (2 kolom per baris) -->
+  <!-- Halaman 2: Menu -->
   <div id="menuSection" style="display:none;">
-    <!-- 13 menu baru -->
+    <!-- 13 menu baru dalam grid 2 kolom -->
     <div class="menuButton" onclick="selectMenu('Bubur Ayam Jamur Hioko 1 porsi', 14000)">Bubur Ayam Jamur Hioko 1 porsi<br>Rp. 14.000</div>
     <div class="menuButton" onclick="selectMenu('Bubur Ayam Jamur Hioko 1/2 porsi', 10000)">Bubur Ayam Jamur Hioko 1/2 porsi<br>Rp. 10.000</div>
     <div class="menuButton" onclick="selectMenu('Nasi Tim Ayam Jamur Hioko', 14000)">Nasi Tim Ayam Jamur Hioko<br>Rp. 14.000</div>
@@ -376,7 +378,8 @@
         option: selectedOptionText,
         orders: orders,
         total: total,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        status: "" // tambahan data "status" kosong
       };
       sendOrderToFirebase(orderData);
       document.getElementById("paymentResultText").innerText =
