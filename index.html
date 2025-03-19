@@ -5,7 +5,6 @@
   <title>Pesanan Makanan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* Style dasar */
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
@@ -26,15 +25,15 @@
       margin: 10px 0;
       box-sizing: border-box;
     }
-    /* Halaman landing (input nama) */
-    #landing {
-      text-align: center;
-    }
+    /* Halaman Landing */
+    #landing { text-align: center; }
+    /* Halaman Home (Opsi Makan di tempat & Bawa pulang) */
+    #home { text-align: center; }
     /* Layout grid untuk menu */
     #menuSection {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 30px; /* Jarak antar kotak */
       margin-top: 20px;
     }
     .menuButton {
@@ -46,7 +45,7 @@
       cursor: pointer;
     }
     .menuButton:hover { background-color: #e2e2e2; }
-    /* Table pesanan */
+    /* Tabel pesanan */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -71,22 +70,44 @@
       font-weight: bold;
       font-size: 18px;
     }
-    /* Halaman konfirmasi pesanan (Payment Result) */
+    /* Halaman Order Summary dibagi menjadi dua bagian */
+    #orderSummary {
+      display: none;
+    }
+    #orderContent, #emptyMessage {
+      padding: 20px;
+    }
+    #emptyMessage {
+      text-align: center;
+    }
+    /* Halaman Konfirmasi Pesanan */
     #paymentResultPage {
       text-align: center;
       margin-top: 20px;
+      display: none;
     }
     #paymentResultPage h3 {
       margin-bottom: 10px;
       font-size: 18px;
     }
-    /* (Opsi pembayaran QRIS dihapus) */
-    /* Tombol Kembali (semua halaman kecuali halaman Menu) */
+    /* Tombol Kembali (di halaman selain Menu) */
     .backBtn {
       background-color: #ddd;
       color: #000;
       border: none;
       margin-top: 10px;
+    }
+    /* Tombol Pesananmu Fixed di bawah layar */
+    #btnViewOrderFixed {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      padding: 10px 20px;
+      font-size: 18px;
+      max-width: 200px;
+      display: none;
     }
   </style>
   
@@ -94,7 +115,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
   <script>
-    // Konfigurasi Firebase
+    // Konfigurasi Firebase (ganti dengan data milik Anda)
     const firebaseConfig = {
       apiKey: "AIzaSyAdll4RHL16rMkXGzDKNBHBIZciYAGO1DA",
       authDomain: "order-online-664a8.firebaseapp.com",
@@ -105,8 +126,6 @@
       appId: "1:553873621735:web:584b6f60ec0ddeacb09842",
       measurementId: "G-0WE03WQ6RG"
     };
-
-    // Inisialisasi Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
@@ -114,35 +133,31 @@
     function sendOrderToFirebase(orderData) {
       console.log("Mengirim data ke Firebase:", orderData);
       db.ref("orders").push(orderData)
-        .then(() => {
-          console.log("Pesanan berhasil dikirim!");
-        })
-        .catch((error) => {
-          console.error("Error mengirim pesanan:", error);
-        });
+        .then(() => { console.log("Pesanan berhasil dikirim!"); })
+        .catch((error) => { console.error("Error mengirim pesanan:", error); });
     }
   </script>
 </head>
 <body>
 
   <!-- Halaman 0: Landing (Input Nama) -->
-  <div id="landing">
+  <div id="landing" style="display:block;">
     <h2>Pesanan atas nama:</h2>
     <input type="text" id="orderNameInput" placeholder="Masukkan nama Anda">
     <button id="btnLanjut" disabled onclick="proceedToHome()">Lanjut</button>
   </div>
   
-  <!-- Halaman 1: Home (Opsi Makan di tempat & Bungkus) -->
-  <div id="home" class="hidden">
+  <!-- Halaman 1: Home (Opsi Makan di tempat & Bawa pulang) -->
+  <div id="home" style="display:none;">
     <button onclick="selectOption('Makan di tempat')">Makan di tempat</button>
-    <button onclick="selectOption('Bungkus')">Bungkus</button>
+    <button onclick="selectOption('Bawa pulang')">Bawa pulang</button>
   </div>
   
   <!-- Div untuk menampilkan opsi yang dipilih -->
-  <div id="selectedOption" class="hidden" style="font-size:20px; font-weight:bold; margin-bottom:20px;"></div>
+  <div id="selectedOption" style="display:none; font-size:20px; font-weight:bold; margin-bottom:20px;"></div>
   
   <!-- Halaman 2: Menu -->
-  <div id="menuSection" class="hidden">
+  <div id="menuSection" style="display:none;">
     <div class="menuButton" onclick="selectMenu('Menu 1', 10000)">Menu 1<br>Rp. 10.000</div>
     <div class="menuButton" onclick="selectMenu('Menu 2', 15000)">Menu 2<br>Rp. 15.000</div>
     <div class="menuButton" onclick="selectMenu('Menu 3', 20000)">Menu 3<br>Rp. 20.000</div>
@@ -150,100 +165,124 @@
   </div>
   
   <!-- Halaman 3: Order Input -->
-  <div id="orderInput" class="hidden">
+  <div id="orderInput" style="display:none;">
     <div id="selectedMenuName" style="font-size:18px; font-weight:bold;"></div>
     <div id="selectedMenuPrice" style="margin-bottom:10px;"></div>
     <input type="number" id="quantity" placeholder="Masukkan jumlah" min="1" value="1">
     <button onclick="addOrder()">Tambah ke pesanan</button>
-    <button id="btnViewOrder" class="hidden" onclick="viewOrder()">Pesananmu</button>
     <button class="backBtn" onclick="showPage('menuSection')">Kembali</button>
   </div>
   
   <!-- Halaman 4: Order Summary (Pesananmu) -->
-  <div id="orderSummary" class="hidden">
-    <h2>Ringkasan Pesanan</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Menu</th>
-          <th>Harga Satuan</th>
-          <th>Jumlah</th>
-          <th>Aksi</th>
-          <th>Total Harga</th>
-        </tr>
-      </thead>
-      <tbody id="orderTable"></tbody>
-    </table>
-    <div class="total-section">
-      <span>Total</span>
-      <span id="totalPrice">Rp. 0</span>
+  <div id="orderSummary" style="display:none;">
+    <div id="orderContent">
+      <h2>Ringkasan Pesanan</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Menu</th>
+            <th>Harga Satuan</th>
+            <th>Jumlah</th>
+            <th>Aksi</th>
+            <th>Total Harga</th>
+          </tr>
+        </thead>
+        <tbody id="orderTable"></tbody>
+      </table>
+      <div class="total-section">
+        <span>Total</span>
+        <span id="totalPrice">Rp. 0</span>
+      </div>
+      <button class="backBtn" onclick="backToMenuFromSummary()">Kembali</button>
+      <button id="btnKirim" onclick="sendOrderNow()">Kirim Pesanan</button>
     </div>
-    <button class="backBtn" onclick="showPage('orderInput')">Kembali</button>
-    <!-- Tombol Kirim Pesanan menggantikan tombol Bayar -->
-    <button id="btnKirim" onclick="sendOrderNow()">Kirim Pesanan</button>
+    <div id="emptyMessage" style="display:none; text-align:center;">
+      <h2>Tidak ada pesanan</h2>
+      <button class="backBtn" onclick="showPage('menuSection')">Kembali</button>
+    </div>
   </div>
   
   <!-- Halaman 5: Konfirmasi Pesanan Terkirim -->
-  <div id="paymentResultPage" class="hidden">
+  <div id="paymentResultPage" style="display:none;">
     <h3 id="paymentResultText"></h3>
-    <button class="backBtn" onclick="showPage('orderSummary')">Kembali</button>
+    <button class="backBtn" onclick="showPage('menuSection')">Kembali</button>
   </div>
   
+  <!-- Tombol Pesananmu Fixed (selalu di bawah layar jika ada pesanan) -->
+  <button id="btnViewOrderFixed" class="hidden" onclick="viewOrderAndHideFixed()" style="position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 1000; padding: 10px 20px; font-size: 18px; max-width: 200px; display: none;">Pesananmu</button>
+  
   <script>
-    // Daftar halaman untuk navigasi
-    const pages = ["landing", "home", "menuSection", "orderInput", "orderSummary", "paymentResultPage"];
-    
-    // Fungsi untuk menampilkan halaman tertentu dan menyembunyikan yang lain
-    function showPage(pageId) {
-      pages.forEach(id => {
-        document.getElementById(id).classList.add("hidden");
-      });
-      document.getElementById(pageId).classList.remove("hidden");
-    }
-    
-    // Variabel global
+    const pages = ["landing", "home", "selectedOption", "menuSection", "orderInput", "orderSummary", "paymentResultPage"];
     let orderName = "";
     let selectedOptionText = "";
     let currentMenu = {};
-    let orders = []; // array untuk menyimpan pesanan
+    let orders = [];
 
-    // Landing page: Aktifkan tombol "Lanjut" jika input tidak kosong
+    function showPage(pageId) {
+      pages.forEach(id => {
+        const elem = document.getElementById(id);
+        if (elem) elem.style.display = "none";
+      });
+      const target = document.getElementById(pageId);
+      if (target) target.style.display = "block";
+      // Jika masuk ke Order Summary atau Payment Result, pastikan tombol fixed disembunyikan.
+      if (pageId === "orderSummary" || pageId === "paymentResultPage") {
+        document.getElementById("btnViewOrderFixed").style.display = "none";
+      } else {
+        updatePesananButton();
+      }
+    }
+
+    function updatePesananButton() {
+      const btn = document.getElementById("btnViewOrderFixed");
+      // Jika Order Summary atau Payment Result sedang aktif, jangan tampilkan tombol fixed.
+      const currentPage = pages.find(id => document.getElementById(id).style.display === "block");
+      if (currentPage === "orderSummary" || currentPage === "paymentResultPage") {
+        btn.style.display = "none";
+        return;
+      }
+      if (orders.length > 0) {
+        btn.classList.remove("hidden");
+        btn.style.display = "block";
+      } else {
+        btn.classList.add("hidden");
+        btn.style.display = "none";
+      }
+    }
+
     const orderNameInput = document.getElementById("orderNameInput");
     const btnLanjut = document.getElementById("btnLanjut");
     orderNameInput.addEventListener("input", function() {
       btnLanjut.disabled = orderNameInput.value.trim() === "";
     });
-    
-    // Fungsi untuk melanjutkan ke halaman Home setelah mengisi nama
+
     function proceedToHome() {
       orderName = orderNameInput.value.trim();
       if (orderName !== "") {
         showPage("home");
       }
     }
-    
-    // Fungsi untuk memilih opsi dari halaman Home
+
     function selectOption(option) {
       selectedOptionText = option;
-      document.getElementById("selectedOption").innerText = "Opsi: " + option;
-      document.getElementById("selectedOption").classList.remove("hidden");
+      const optElem = document.getElementById("selectedOption");
+      optElem.innerText = "Opsi: " + option;
+      optElem.style.display = "block";
       showPage("menuSection");
     }
-    
-    // Fungsi untuk memilih menu dari halaman Menu
+
     function selectMenu(name, price) {
-      if (selectedOptionText === "") {
-        alert("Silakan pilih opsi Makan di tempat atau Bungkus terlebih dahulu.");
+      if (!selectedOptionText) {
+        alert("Silakan pilih opsi Makan di tempat atau Bawa pulang terlebih dahulu.");
         return;
       }
       currentMenu = { name, price };
-      showPage("orderInput");
       document.getElementById("selectedMenuName").innerText = name;
       document.getElementById("selectedMenuPrice").innerText = "Harga: Rp. " + price.toLocaleString("id-ID");
       document.getElementById("quantity").value = 1;
+      showPage("orderInput");
     }
-    
-    // Fungsi untuk menambahkan pesanan
+
     function addOrder() {
       const qty = parseInt(document.getElementById("quantity").value);
       if (qty > 0) {
@@ -259,15 +298,24 @@
             total: currentMenu.price * qty
           });
         }
-        document.getElementById("btnViewOrder").classList.remove("hidden");
-        document.getElementById("quantity").value = 1;
+        updatePesananButton();
+        // Setelah menambahkan pesanan, kembali ke halaman Menu
+        showPage("menuSection");
       }
     }
-    
-    // Fungsi untuk merender ulang tabel pesanan
+
     function renderOrderTable() {
       const tbody = document.getElementById("orderTable");
       tbody.innerHTML = "";
+      if (orders.length === 0) {
+        // Jika tidak ada pesanan, sembunyikan orderContent dan tampilkan emptyMessage.
+        document.getElementById("orderContent").style.display = "none";
+        document.getElementById("emptyMessage").style.display = "block";
+        return;
+      } else {
+        document.getElementById("orderContent").style.display = "block";
+        document.getElementById("emptyMessage").style.display = "none";
+      }
       let grandTotal = 0;
       orders.forEach((order, index) => {
         const row = document.createElement("tr");
@@ -288,21 +336,24 @@
       });
       document.getElementById("totalPrice").innerText = "Rp. " + grandTotal.toLocaleString("id-ID");
     }
-    
-    // Fungsi untuk menampilkan halaman Ringkasan Pesanan
+
+    function viewOrderAndHideFixed() {
+      document.getElementById("btnViewOrderFixed").style.display = "none";
+      viewOrder();
+    }
+
     function viewOrder() {
       showPage("orderSummary");
       renderOrderTable();
     }
-    
-    // Fungsi untuk menambah jumlah pesanan
+
     function increaseQuantity(index) {
       orders[index].quantity += 1;
       orders[index].total = orders[index].price * orders[index].quantity;
       renderOrderTable();
+      updatePesananButton();
     }
-    
-    // Fungsi untuk mengurangi jumlah pesanan
+
     function decreaseQuantity(index) {
       orders[index].quantity -= 1;
       if (orders[index].quantity <= 0) {
@@ -311,12 +362,9 @@
         orders[index].total = orders[index].price * orders[index].quantity;
       }
       renderOrderTable();
-      if (orders.length === 0) {
-        document.getElementById("btnViewOrder").classList.add("hidden");
-      }
+      updatePesananButton();
     }
-    
-    // Fungsi untuk mengirim data pesanan ke Firebase dan menampilkan konfirmasi
+
     function sendOrderNow() {
       let total = orders.reduce((sum, order) => sum + order.total, 0);
       const orderData = {
@@ -327,9 +375,22 @@
         timestamp: Date.now()
       };
       sendOrderToFirebase(orderData);
-      document.getElementById("paymentResultText").innerText = "Pesanan terkirim. Total: Rp. " + total.toLocaleString("id-ID");
+      document.getElementById("paymentResultText").innerText =
+        "Pesanan terkirim. Total: Rp. " + total.toLocaleString("id-ID");
+      orders = [];
+      updatePesananButton();
       showPage("paymentResultPage");
     }
+
+    // Fungsi untuk tombol "Kembali" di halaman Ringkasan Pesanan
+    function backToMenuFromSummary() {
+      showPage("menuSection");
+      updatePesananButton();
+    }
+
+    window.onload = function() {
+      showPage("landing");
+    };
   </script>
 </body>
-  </html>
+</html>
