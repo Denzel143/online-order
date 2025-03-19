@@ -29,11 +29,11 @@
     #landing { text-align: center; }
     /* Halaman Home (Opsi Makan di tempat & Bawa pulang) */
     #home { text-align: center; }
-    /* Layout grid untuk menu */
+    /* Layout grid untuk menu dengan 2 kolom per baris */
     #menuSection {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px; /* Jarak antar kotak menu */
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
       margin-top: 20px;
     }
     .menuButton {
@@ -93,7 +93,7 @@
       border: none;
       margin-top: 10px;
     }
-    /* Tombol Pesananmu Fixed */
+    /* Tombol Pesananmu Fixed di bawah layar */
     #btnViewOrderFixed {
       position: fixed;
       bottom: 10px;
@@ -111,7 +111,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
   <script>
-    // Konfigurasi Firebase (ganti dengan data milik Anda)
+    // Konfigurasi Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAdll4RHL16rMkXGzDKNBHBIZciYAGO1DA",
       authDomain: "order-online-664a8.firebaseapp.com",
@@ -125,7 +125,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Fungsi untuk mengirim data pesanan ke Firebase
     function sendOrderToFirebase(orderData) {
       console.log("Mengirim data ke Firebase:", orderData);
       db.ref("orders").push(orderData)
@@ -152,8 +151,9 @@
   <!-- Div untuk menampilkan opsi yang dipilih -->
   <div id="selectedOption" style="display:none; font-size:20px; font-weight:bold; margin-bottom:20px;"></div>
   
-  <!-- Halaman 2: Menu -->
+  <!-- Halaman 2: Menu (2 kolom per baris) -->
   <div id="menuSection" style="display:none;">
+    <!-- 13 menu baru -->
     <div class="menuButton" onclick="selectMenu('Bubur Ayam Jamur Hioko 1 porsi', 14000)">Bubur Ayam Jamur Hioko 1 porsi<br>Rp. 14.000</div>
     <div class="menuButton" onclick="selectMenu('Bubur Ayam Jamur Hioko 1/2 porsi', 10000)">Bubur Ayam Jamur Hioko 1/2 porsi<br>Rp. 10.000</div>
     <div class="menuButton" onclick="selectMenu('Nasi Tim Ayam Jamur Hioko', 14000)">Nasi Tim Ayam Jamur Hioko<br>Rp. 14.000</div>
