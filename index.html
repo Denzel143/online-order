@@ -5,9 +5,7 @@
   <title>Pesanan Makanan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* Tambahkan background-color kuning untuk seluruh laman */
     body {
-      background-color: #FFFFFF; /* Contoh warna kuning lembut (LemonChiffon) */
       font-family: Arial, sans-serif;
       margin: 20px;
     }
@@ -31,11 +29,11 @@
     #landing { text-align: center; }
     /* Halaman Home (Opsi Makan di tempat & Bawa pulang) */
     #home { text-align: center; }
-    /* Layout grid untuk menu dengan 2 kolom per baris */
+    /* Layout grid untuk menu (2 kolom per baris) */
     #menuSection {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 30px; /* jarak antar kotak menu */
+      gap: 30px;
       margin-top: 20px;
     }
     .menuButton {
@@ -127,6 +125,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    // Fungsi untuk mengirim data pesanan ke Firebase
     function sendOrderToFirebase(orderData) {
       console.log("Mengirim data ke Firebase:", orderData);
       db.ref("orders").push(orderData)
@@ -153,9 +152,8 @@
   <!-- Div untuk menampilkan opsi yang dipilih -->
   <div id="selectedOption" style="display:none; font-size:20px; font-weight:bold; margin-bottom:20px;"></div>
   
-  <!-- Halaman 2: Menu -->
+  <!-- Halaman 2: Menu (2 kolom per baris) -->
   <div id="menuSection" style="display:none;">
-    <!-- 13 menu baru dalam grid 2 kolom -->
     <div class="menuButton" onclick="selectMenu('Bubur Ayam Jamur Hioko 1 porsi', 14000)">Bubur Ayam Jamur Hioko 1 porsi<br>Rp. 14.000</div>
     <div class="menuButton" onclick="selectMenu('Bubur Ayam Jamur Hioko 1/2 porsi', 10000)">Bubur Ayam Jamur Hioko 1/2 porsi<br>Rp. 10.000</div>
     <div class="menuButton" onclick="selectMenu('Nasi Tim Ayam Jamur Hioko', 14000)">Nasi Tim Ayam Jamur Hioko<br>Rp. 14.000</div>
@@ -232,7 +230,7 @@
       });
       const target = document.getElementById(pageId);
       if (target) target.style.display = "block";
-      // Jika kita masuk ke Order Summary atau Payment Result, pastikan tombol fixed tidak muncul.
+      // Jika di Order Summary atau Payment Result, pastikan tombol fixed tidak muncul.
       if (pageId === "orderSummary" || pageId === "paymentResultPage") {
         document.getElementById("btnViewOrderFixed").style.display = "none";
       } else {
@@ -242,7 +240,7 @@
 
     function updatePesananButton() {
       const btn = document.getElementById("btnViewOrderFixed");
-      // Jangan tampilkan tombol jika di halaman Order Summary atau Payment Result
+      // Jangan tampilkan tombol jika di Order Summary atau Payment Result
       const currentPage = pages.find(id => document.getElementById(id).style.display === "block");
       if (currentPage === "orderSummary" || currentPage === "paymentResultPage") {
         btn.style.display = "none";
@@ -373,13 +371,22 @@
 
     function sendOrderNow() {
       let total = orders.reduce((sum, order) => sum + order.total, 0);
+      // Format tanggal dd/mm/yyyy
+      const today = new Date();
+      const dd = String(today.getDate()).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const yyyy = today.getFullYear();
+      const formattedDate = dd + '/' + mm + '/' + yyyy;
+      
       const orderData = {
         customer: orderName,
         option: selectedOptionText,
         orders: orders,
         total: total,
         timestamp: Date.now(),
-        status: "" // tambahan data "status" kosong
+        status1: "",
+        status2: "",
+        date: formattedDate
       };
       sendOrderToFirebase(orderData);
       document.getElementById("paymentResultText").innerText =
