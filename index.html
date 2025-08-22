@@ -292,7 +292,7 @@
       margin-top: 10px;
     }
     
-    /* NEW: Order Card Styles (menggantikan tabel) */
+    /* Order Card Styles */
     .order-card-container {
       display: flex;
       flex-direction: column;
@@ -469,7 +469,7 @@
       color: var(--text);
     }
     
-    /* Option Selector - IMPROVED */
+    /* Option Selector */
     .option-selector {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -561,7 +561,7 @@
       line-height: 1.5;
     }
     
-    /* New illustration for takeaway option */
+    /* Takeaway illustration */
     .takeaway-illustration {
       position: absolute;
       bottom: -10px;
@@ -570,6 +570,24 @@
       transform: rotate(-15deg);
       font-size: 80px;
       color: var(--primary);
+    }
+    
+    /* Note Input Styles */
+    .note-input {
+      font-size: 14px;
+      padding: 10px;
+      resize: vertical;
+      min-height: 60px;
+      margin-top: 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 100%;
+    }
+    
+    .note-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-light);
     }
     
     /* Animations */
@@ -655,6 +673,9 @@
       opacity: 0.1;
       pointer-events: none;
       z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .mushroom-1 {
@@ -681,7 +702,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
   <script>
-    // Konfigurasi Firebase (ganti dengan data milik Anda)
+    // Konfigurasi Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAdll4RHL16rMkXGzDKNBHBIZciYAGO1DA",
       authDomain: "order-online-664a8.firebaseapp.com",
@@ -734,7 +755,7 @@
       </button>
     </div>
 
-    <!-- Halaman 1: Home (Opsi Makan di tempat & Bawa pulang) - IMPROVED -->
+    <!-- Halaman 1: Home (Opsi Makan di tempat & Bawa pulang) -->
     <div id="home" class="page">
       <h2><i class="fas fa-utensils food-icon"></i>Pilih Jenis Pesanan</h2>
       <div class="option-selector">
@@ -766,7 +787,7 @@
       <h2><i class="fas fa-check-circle food-icon"></i>Opsi Dipilih: <span id="optionText"></span></h2>
       <p>Silakan pilih menu makanan dari daftar berikut:</p>
       
-      <!-- Halaman 2: Menu (grid layout) dengan perbaikan ikon -->
+      <!-- Halaman 2: Menu (grid layout) -->
       <div class="menu-grid">
         <div class="menu-item" onclick="selectMenu('Bubur Ayam Jamur Hioko 1 porsi', 14000)">
           <i class="fas fa-bowl-rice menu-icon"></i>
@@ -841,7 +862,6 @@
           <div class="menu-desc">Emping dengan paduan pedas dan manis</div>
         </div>
         <div class="menu-item" onclick="selectMenu('Emping Rasa Bawang', 20000)">
-          <!-- Perbaikan: Mengganti fa-onion dengan fa-ring (bawang) yang tersedia -->
           <i class="fas fa-ring menu-icon"></i>
           <div class="menu-name">Emping Rasa Bawang</div>
           <div class="menu-price">Rp. 20.000</div>
@@ -881,7 +901,7 @@
       </button>
     </div>
 
-    <!-- Halaman 4: Order Summary (Pesananmu) - Diperbarui dengan tampilan kartu -->
+    <!-- Halaman 4: Order Summary (Pesananmu) -->
     <div id="orderSummary" class="page">
       <h2><i class="fas fa-receipt food-icon"></i>Ringkasan Pesanan</h2>
       
@@ -1055,7 +1075,6 @@
           <div class="order-card-header">
             <div class="order-card-title">${order.name}</div>
           </div>
-          ${order.note ? `<div class="order-card-note">Catatan: ${order.note}</div>` : ''}
           <div class="order-card-details">
             <div class="order-card-detail">
               <div class="detail-label">Harga Satuan</div>
@@ -1074,10 +1093,18 @@
               <div class="detail-value">Rp. ${order.total.toLocaleString("id-ID")}</div>
             </div>
           </div>
+          <div class="input-group" style="margin-top: 10px;">
+            <textarea class="note-input" placeholder="Tambahkan catatan untuk item ini" 
+                onchange="updateNote(${index}, this.value)">${order.note || ''}</textarea>
+          </div>
         `;
         container.appendChild(orderCard);
       });
       document.getElementById("totalPrice").textContent = "Rp. " + grandTotal.toLocaleString("id-ID");
+    }
+
+    function updateNote(index, note) {
+      orders[index].note = note;
     }
 
     function viewOrderAndHideFixed() {
@@ -1117,10 +1144,16 @@
       const yyyy = today.getFullYear();
       const formattedDate = dd + '/' + mm + '/' + yyyy;
 
+      // Pastikan setiap order memiliki note, jika kosong isi dengan "-"
+      const ordersWithNotes = orders.map(order => ({
+        ...order,
+        note: order.note && order.note.trim() !== "" ? order.note : "-"
+      }));
+
       const orderData = {
         customer: orderName,
         option: selectedOptionText,
-        orders: orders,
+        orders: ordersWithNotes,
         total: total,
         timestamp: Date.now(),
         status1: "",
