@@ -167,7 +167,7 @@
     }
     
     .btn-accent {
-      background-color: var(--accent);
+      background-color: var(--accept);
       color: white;
       box-shadow: 0 4px 8px rgba(255, 87, 34, 0.3);
     }
@@ -292,35 +292,64 @@
       margin-top: 10px;
     }
     
-    /* Order Table Styles */
-    .order-table {
-      width: 100%;
-      border-collapse: collapse;
+    /* NEW: Order Card Styles (menggantikan tabel) */
+    .order-card-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
       margin: 20px 0;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     
-    .order-table th,
-    .order-table td {
+    .order-card {
+      background-color: var(--surface);
+      border-radius: 10px;
       padding: 15px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
     }
     
-    .order-table th {
-      background-color: var(--primary-light);
+    .order-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .order-card-title {
       font-weight: 600;
+      font-size: 16px;
       color: var(--text);
     }
     
-    .order-table tr:last-child td {
-      border-bottom: none;
+    .order-card-note {
+      font-style: italic;
+      color: var(--text-light);
+      font-size: 14px;
+      margin-bottom: 10px;
+      padding-left: 10px;
+      border-left: 3px solid var(--primary-light);
     }
     
-    .order-table tr:hover {
-      background-color: #fffdf5;
+    .order-card-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    
+    .order-card-detail {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .detail-label {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-bottom: 5px;
+    }
+    
+    .detail-value {
+      font-weight: 500;
+      color: var(--text);
     }
     
     .qty-controls {
@@ -612,6 +641,10 @@
       .page {
         padding: 20px;
       }
+      
+      .order-card-details {
+        grid-template-columns: 1fr;
+      }
     }
     
     /* Decorative Elements */
@@ -733,7 +766,7 @@
       <h2><i class="fas fa-check-circle food-icon"></i>Opsi Dipilih: <span id="optionText"></span></h2>
       <p>Silakan pilih menu makanan dari daftar berikut:</p>
       
-      <!-- Halaman 2: Menu (grid layout) -->
+      <!-- Halaman 2: Menu (grid layout) dengan perbaikan ikon -->
       <div class="menu-grid">
         <div class="menu-item" onclick="selectMenu('Bubur Ayam Jamur Hioko 1 porsi', 14000)">
           <i class="fas fa-bowl-rice menu-icon"></i>
@@ -784,7 +817,7 @@
           <div class="menu-desc">Pangsit goreng renyah</div>
         </div>
         <div class="menu-item" onclick="selectMenu('KAJOL', 7000)">
-          <i class="fas fa-mug-hot menu-icon"></i>
+          <i class="fas fa-wine-bottle menu-icon"></i>
           <div class="menu-name">KAJOL</div>
           <div class="menu-price">Rp. 7.000</div>
           <div class="menu-desc">Minuman segar khas kedai kami</div>
@@ -808,7 +841,8 @@
           <div class="menu-desc">Emping dengan paduan pedas dan manis</div>
         </div>
         <div class="menu-item" onclick="selectMenu('Emping Rasa Bawang', 20000)">
-          <i class="fas fa-onion menu-icon"></i>
+          <!-- Perbaikan: Mengganti fa-onion dengan fa-ring (bawang) yang tersedia -->
+          <i class="fas fa-ring menu-icon"></i>
           <div class="menu-name">Emping Rasa Bawang</div>
           <div class="menu-price">Rp. 20.000</div>
           <div class="menu-desc">Emping dengan rasa bawang yang gurih</div>
@@ -847,23 +881,12 @@
       </button>
     </div>
 
-    <!-- Halaman 4: Order Summary (Pesananmu) -->
+    <!-- Halaman 4: Order Summary (Pesananmu) - Diperbarui dengan tampilan kartu -->
     <div id="orderSummary" class="page">
       <h2><i class="fas fa-receipt food-icon"></i>Ringkasan Pesanan</h2>
       
       <div id="orderContent">
-        <table class="order-table">
-          <thead>
-            <tr>
-              <th>Menu</th>
-              <th>Harga Satuan</th>
-              <th>Jumlah</th>
-              <th>Aksi</th>
-              <th>Total Harga</th>
-            </tr>
-          </thead>
-          <tbody id="orderTable"></tbody>
-        </table>
+        <div class="order-card-container" id="orderCardContainer"></div>
         
         <div class="total-section">
           <span>Total Pembayaran</span>
@@ -1013,8 +1036,8 @@
     }
 
     function renderOrderTable() {
-      const tbody = document.getElementById("orderTable");
-      tbody.innerHTML = "";
+      const container = document.getElementById("orderCardContainer");
+      container.innerHTML = "";
       if (orders.length === 0) {
         document.getElementById("orderContent").style.display = "none";
         document.getElementById("emptyMessage").style.display = "block";
@@ -1025,24 +1048,34 @@
       }
       let grandTotal = 0;
       orders.forEach((order, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>
-            ${order.name}
-            ${order.note ? `<div style="font-style: italic; color: #777; font-size: 14px;">Catatan: ${order.note}</div>` : ''}
-          </td>
-          <td>Rp. ${order.price.toLocaleString("id-ID")}</td>
-          <td>${order.quantity}</td>
-          <td>
-            <div class="qty-controls">
-              <button class="qty-btn" onclick="increaseQuantity(${index})">+</button>
-              <button class="qty-btn" onclick="decreaseQuantity(${index})">–</button>
-            </div>
-          </td>
-          <td>Rp. ${order.total.toLocaleString("id-ID")}</td>
-        `;
-        tbody.appendChild(row);
         grandTotal += order.total;
+        const orderCard = document.createElement("div");
+        orderCard.className = "order-card";
+        orderCard.innerHTML = `
+          <div class="order-card-header">
+            <div class="order-card-title">${order.name}</div>
+          </div>
+          ${order.note ? `<div class="order-card-note">Catatan: ${order.note}</div>` : ''}
+          <div class="order-card-details">
+            <div class="order-card-detail">
+              <div class="detail-label">Harga Satuan</div>
+              <div class="detail-value">Rp. ${order.price.toLocaleString("id-ID")}</div>
+            </div>
+            <div class="order-card-detail">
+              <div class="detail-label">Jumlah</div>
+              <div class="qty-controls">
+                <button class="qty-btn" onclick="decreaseQuantity(${index})">–</button>
+                <span>${order.quantity}</span>
+                <button class="qty-btn" onclick="increaseQuantity(${index})">+</button>
+              </div>
+            </div>
+            <div class="order-card-detail">
+              <div class="detail-label">Total Harga</div>
+              <div class="detail-value">Rp. ${order.total.toLocaleString("id-ID")}</div>
+            </div>
+          </div>
+        `;
+        container.appendChild(orderCard);
       });
       document.getElementById("totalPrice").textContent = "Rp. " + grandTotal.toLocaleString("id-ID");
     }
