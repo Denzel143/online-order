@@ -2,23 +2,23 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Kedai Hioko Graha Padma - Pesanan Makanan</title>
+  <title>Mie Dimsum Mentai - Pesanan Makanan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #FFC107;
-      --primary-dark: #FFA000;
-      --primary-light: #FFECB3;
+      --primary: #FF6B35;
+      --primary-dark: #E55A2B;
+      --primary-light: #FFE8E0;
       --secondary: #4CAF50;
       --accent: #FF5722;
       --text: #333333;
       --text-light: #757575;
-      --background: #FFF9E6;
+      --background: #FFF5F0;
       --surface: #FFFFFF;
-      --border: #E0E0E0;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --border: #FFD5C8;
+      --shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
     }
 
     * {
@@ -37,13 +37,15 @@
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     /* Header Styles */
     .header {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
-      padding: 15px 20px;
+      padding: 20px 20px;
       text-align: center;
       box-shadow: var(--shadow);
       position: relative;
@@ -86,6 +88,7 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
+      flex: 1;
     }
 
     /* Page Styles */
@@ -96,7 +99,7 @@
       border-radius: 12px;
       box-shadow: var(--shadow);
       padding: 25px;
-      margin-bottom: 80px;
+      margin-bottom: 20px;
     }
 
     .page.active {
@@ -141,12 +144,12 @@
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
-      box-shadow: 0 4px 8px rgba(255, 173, 0, 0.3);
+      box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(255, 173, 0, 0.4);
+      box-shadow: 0 6px 12px rgba(255, 107, 53, 0.4);
     }
 
     .btn-secondary {
@@ -161,7 +164,7 @@
     }
 
     .btn-accent {
-      background-color: var(--accept);
+      background-color: var(--accent);
       color: white;
       box-shadow: 0 4px 8px rgba(255, 87, 34, 0.3);
     }
@@ -272,6 +275,13 @@
       margin-bottom: 8px;
       font-size: 18px;
       color: var(--text);
+    }
+
+    .menu-description {
+      color: var(--text-light);
+      font-size: 14px;
+      margin-bottom: 10px;
+      min-height: 20px;
     }
 
     .menu-price {
@@ -406,7 +416,7 @@
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       font-weight: 600;
-      box-shadow: 0 6px 15px rgba(255, 173, 0, 0.5);
+      box-shadow: 0 6px 15px rgba(255, 107, 53, 0.5);
       border: none;
       cursor: pointer;
       display: flex;
@@ -418,7 +428,7 @@
 
     .fixed-order-btn:hover {
       transform: translateX(-50%) translateY(-3px);
-      box-shadow: 0 8px 20px rgba(255, 173, 0, 0.6);
+      box-shadow: 0 8px 20px rgba(255, 107, 53, 0.6);
     }
 
     /* Empty State */
@@ -457,103 +467,6 @@
       color: var(--text);
     }
 
-    /* Option Selector */
-    .option-selector {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      margin: 40px 0;
-    }
-
-    .option-card {
-      background: white;
-      border-radius: 16px;
-      padding: 30px 25px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-      border: 2px solid transparent;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .option-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 160, 0, 0.1));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .option-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .option-card:hover::before {
-      opacity: 1;
-    }
-
-    .option-card.selected {
-      border-color: var(--primary);
-      background-color: var(--primary-light);
-      box-shadow: 0 8px 20px rgba(255, 173, 0, 0.2);
-    }
-
-    .option-card.selected::before {
-      opacity: 1;
-    }
-
-    .option-icon-wrapper {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--primary-light), var(--primary-light));
-      border-radius: 50%;
-      position: relative;
-    }
-
-    .option-icon {
-      font-size: 50px;
-      color: var(--primary-dark);
-      z-index: 2;
-    }
-
-    .option-icon-wrapper::after {
-      content: "";
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath fill='%23FFC107' fill-opacity='0.2' d='M60,10 A50,50 0 1,1 60,110 A50,50 0 1,1 60,10'/%3E%3C/svg%3E") no-repeat center;
-      z-index: 1;
-    }
-
-    .option-name {
-      font-weight: 600;
-      font-size: 20px;
-      margin-bottom: 12px;
-      color: var(--text);
-    }
-
-    /* Takeaway illustration */
-    .takeaway-illustration {
-      position: absolute;
-      bottom: -10px;
-      right: -10px;
-      opacity: 0.1;
-      transform: rotate(-15deg);
-      font-size: 80px;
-      color: var(--primary);
-    }
-
     /* Note Input Styles */
     .note-input {
       font-size: 14px;
@@ -570,6 +483,16 @@
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 2px var(--primary-light);
+    }
+
+    /* Footer Styles */
+    .footer {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      text-align: center;
+      padding: 15px 20px;
+      margin-top: auto;
+      font-weight: 500;
     }
 
     /* Animations */
@@ -590,9 +513,9 @@
     }
 
     @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(255, 173, 0, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(255, 173, 0, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(255, 173, 0, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 107, 53, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0); }
     }
 
     @keyframes ripple {
@@ -614,24 +537,6 @@
     @media (max-width: 768px) {
       .menu-grid {
         grid-template-columns: 1fr;
-      }
-
-      .option-selector {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      .option-card {
-        padding: 20px 15px;
-      }
-
-      .option-icon-wrapper {
-        width: 80px;
-        height: 80px;
-      }
-
-      .option-icon {
-        font-size: 40px;
       }
 
       .container {
@@ -720,9 +625,8 @@
   <div class="header">
     <div class="logo">
       <i class="fas fa-bowl-food logo-icon"></i>
-      <div class="logo-text">Kedai Hioko Graha Padma</div>
+      <div class="logo-text">Mie Dimsum Mentai</div>
     </div>
-    <!-- Tagline dihapus sesuai permintaan -->
   </div>
 
   <div class="container">
@@ -732,131 +636,45 @@
       <div class="input-group">
         <input type="text" id="orderNameInput" class="input-field" placeholder="Masukkan nama Anda">
       </div>
-      <button id="btnLanjut" class="btn btn-primary" disabled onclick="proceedToHome()">
-        <i class="fas fa-arrow-right"></i> Lanjut
+      <button id="btnLanjut" class="btn btn-primary" disabled onclick="proceedToMenu()">
+        <i class="fas fa-arrow-right"></i> Lanjut ke Menu
       </button>
     </div>
 
-    <!-- Halaman 1: Home (Opsi Makan di tempat & Bawa pulang) -->
-    <div id="home" class="page">
-      <!-- Judul dihapus sesuai permintaan -->
-      <div class="option-selector">
-        <div class="option-card" onclick="selectOption('Makan di tempat')">
-          <div class="option-icon-wrapper">
-            <i class="fas fa-store option-icon"></i>
-          </div>
-          <div class="option-name">Makan di Tempat</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-          <div class="takeaway-illustration">
-            <i class="fas fa-chair"></i>
-          </div>
-        </div>
-        <div class="option-card" onclick="selectOption('Bawa pulang')">
-          <div class="option-icon-wrapper">
-            <i class="fas fa-shopping-bag option-icon"></i>
-          </div>
-          <div class="option-name">Bawa Pulang</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-          <div class="takeaway-illustration">
-            <i class="fas fa-home"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Div untuk menampilkan opsi yang dipilih -->
-    <div id="selectedOption" class="page">
-      <h2><i class="fas fa-check-circle food-icon"></i><span id="optionText"></span></h2>
+    <!-- Halaman 1: Menu (grid layout) -->
+    <div id="menu" class="page">
+      <h2><i class="fas fa-utensils food-icon"></i>Menu Mie Dimsum Mentai</h2>
       <p>Silakan pilih menu makanan dari daftar berikut:</p>
 
-      <!-- Halaman 2: Menu (grid layout) -->
       <div class="menu-grid">
-        <div class="menu-item" onclick="selectMenu('Bubur Ayam Jamur Hioko 1 porsi', 14000)">
-          <i class="fas fa-bowl-rice menu-icon"></i>
-          <div class="menu-name">Bubur Ayam Jamur Hioko 1 porsi</div>
-          <div class="menu-price">Rp. 14.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-        </div>
-        <div class="menu-item" onclick="selectMenu('Bubur Ayam Jamur Hioko 1/2 porsi', 10000)">
-          <i class="fas fa-bowl-rice menu-icon"></i>
-          <div class="menu-name">Bubur Ayam Jamur Hioko 1/2 porsi</div>
-          <div class="menu-price">Rp. 10.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-        </div>
-        <div class="menu-item" onclick="selectMenu('Nasi Tim Ayam Jamur Hioko', 14000)">
-          <i class="fas fa-utensils menu-icon"></i>
-          <div class="menu-name">Nasi Tim Ayam Jamur Hioko</div>
-          <div class="menu-price">Rp. 14.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-        </div>
-        <div class="menu-item" onclick="selectMenu('Tahu Bakso Ayam', 4000)">
+        <div class="menu-item" onclick="selectMenu('Dimsum isi 4', 13000)">
           <i class="fas fa-drumstick-bite menu-icon"></i>
-          <div class="menu-name">Tahu Bakso Ayam</div>
-          <div class="menu-price">Rp. 4.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
+          <div class="menu-name">Dimsum isi 4</div>
+          <div class="menu-description"></div>
+          <div class="menu-price">Rp. 13.000</div>
         </div>
-        <div class="menu-item" onclick="selectMenu('Siomay Ayam', 7000)">
-          <i class="fas fa-fish menu-icon"></i>
-          <div class="menu-name">Siomay Ayam</div>
-          <div class="menu-price">Rp. 7.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-        </div>
-        <div class="menu-item" onclick="selectMenu('Cakwe', 1500)">
-          <i class="fas fa-bread-slice menu-icon"></i>
-          <div class="menu-name">Cakwe</div>
-          <div class="menu-price">Rp. 1.500</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-        </div>
-        <div class="menu-item" onclick="selectMenu('Telor Pindang Coklat', 4000)">
-          <i class="fas fa-egg menu-icon"></i>
-          <div class="menu-name">Telor Pindang Coklat</div>
-          <div class="menu-price">Rp. 4.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-        </div>
-        <div class="menu-item" onclick="selectMenu('Pangsit', 1000)">
-          <i class="fas fa-cookie menu-icon"></i>
-          <div class="menu-name">Pangsit</div>
-          <div class="menu-price">Rp. 1.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-        </div>
-        <div class="menu-item" onclick="selectMenu('KAJOL', 7000)">
-          <i class="fas fa-wine-bottle menu-icon"></i>
-          <div class="menu-name">KAJOL</div>
-          <div class="menu-price">Rp. 7.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-        </div>
-        <div class="menu-item" onclick="selectMenu('Buah Lo Han Kuo', 15000)">
-          <i class="fas fa-apple-alt menu-icon"></i>
-          <div class="menu-name">Buah Lo Han Kuo</div>
+        <div class="menu-item" onclick="selectMenu('Dimsum isi 6', 15000)">
+          <i class="fas fa-drumstick-bite menu-icon"></i>
+          <div class="menu-name">Dimsum isi 6</div>
+          <div class="menu-description"></div>
           <div class="menu-price">Rp. 15.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
         </div>
-        <div class="menu-item" onclick="selectMenu('Emping Rasa Manis', 20000)">
-          <i class="fas fa-cookie-bite menu-icon"></i>
-          <div class="menu-name">Emping Rasa Manis</div>
-          <div class="menu-price">Rp. 20.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
+        <div class="menu-item" onclick="selectMenu('Dimsum isi 8', 18000)">
+          <i class="fas fa-drumstick-bite menu-icon"></i>
+          <div class="menu-name">Dimsum isi 8</div>
+          <div class="menu-description"></div>
+          <div class="menu-price">Rp. 18.000</div>
         </div>
-        <div class="menu-item" onclick="selectMenu('Emping Rasa Pedas Manis', 20000)">
-          <i class="fas fa-pepper-hot menu-icon"></i>
-          <div class="menu-name">Emping Rasa Pedas Manis</div>
-          <div class="menu-price">Rp. 20.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
-        </div>
-        <div class="menu-item" onclick="selectMenu('Emping Rasa Bawang', 20000)">
-          <i class="fas fa-ring menu-icon"></i>
-          <div class="menu-name">Emping Rasa Bawang</div>
-          <div class="menu-price">Rp. 20.000</div>
-          <!-- Deskripsi dihapus sesuai permintaan -->
+        <div class="menu-item" onclick="selectMenu('Mie dan Dimsum Mentai', 15000)">
+          <i class="fas fa-utensils menu-icon"></i>
+          <div class="menu-name">Mie dan Dimsum Mentai</div>
+          <div class="menu-description">Isi 6 dimsum dan mie</div>
+          <div class="menu-price">Rp. 15.000</div>
         </div>
       </div>
-
-      <button class="btn btn-back" onclick="backToHome()">
-        <i class="fas fa-arrow-left"></i> Kembali
-      </button>
     </div>
 
-    <!-- Halaman 3: Order Input -->
+    <!-- Halaman 2: Order Input -->
     <div id="orderInput" class="page">
       <h2><i class="fas fa-edit food-icon"></i>Tambah Pesanan</h2>
       <div class="input-group">
@@ -883,7 +701,7 @@
       </button>
     </div>
 
-    <!-- Halaman 4: Order Summary (Pesananmu) -->
+    <!-- Halaman 3: Order Summary (Pesananmu) -->
     <div id="orderSummary" class="page">
       <h2><i class="fas fa-receipt food-icon"></i>Ringkasan Pesanan</h2>
 
@@ -912,17 +730,22 @@
       </div>
     </div>
 
-    <!-- Halaman 5: Konfirmasi Pesanan Terkirim -->
+    <!-- Halaman 4: Konfirmasi Pesanan Terkirim -->
     <div id="paymentResultPage" class="page">
       <div class="success-state">
         <i class="fas fa-check-circle success-icon"></i>
         <div class="success-text" id="paymentResultText">Pesanan berhasil dikirim!</div>
-        <p>Terima kasih telah memesan di Kedai Hioko Graha Padma.</p>
+        <p>Terima kasih telah memesan di Mie Dimsum Mentai.</p>
         <button class="btn btn-primary" onclick="backToHomeFromSuccess()">
           <i class="fas fa-home"></i> Kembali ke Halaman Utama
         </button>
       </div>
     </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Pre-Order 27-31 Oktober 2025
   </div>
 
   <!-- Tombol Pesananmu Fixed (selalu di bawah layar jika ada pesanan) -->
@@ -931,9 +754,9 @@
   </button>
 
   <script>
-    const pages = ["landing", "home", "selectedOption", "orderInput", "orderSummary", "paymentResultPage"];
+    const pages = ["landing", "menu", "orderInput", "orderSummary", "paymentResultPage"];
     let orderName = "";
-    let selectedOptionText = "";
+    let selectedOptionText = "Makan di Tempat"; // Default value
     let currentMenu = {};
     let orders = [];
 
@@ -974,38 +797,24 @@
       btnLanjut.disabled = orderNameInput.value.trim() === "";
     });
 
-    function proceedToHome() {
+    function proceedToMenu() {
       orderName = orderNameInput.value.trim();
       if (orderName !== "") {
-        showPage("home");
+        showPage("menu");
       }
     }
 
-    function selectOption(option) {
-      selectedOptionText = option;
-      document.getElementById("optionText").textContent = option;
-      showPage("selectedOption");
-    }
-
-    function backToHome() {
-      showPage("home");
+    function backToMenu() {
+      showPage("menu");
     }
 
     function selectMenu(name, price) {
-      if (!selectedOptionText) {
-        alert("Silakan pilih opsi Makan di tempat atau Bawa pulang terlebih dahulu.");
-        return;
-      }
       currentMenu = { name, price };
       document.getElementById("selectedMenuName").textContent = name;
       document.getElementById("selectedMenuPrice").textContent = "Rp. " + price.toLocaleString("id-ID");
       document.getElementById("quantity").value = 1;
       document.getElementById("itemNote").value = "";
       showPage("orderInput");
-    }
-
-    function backToMenu() {
-      showPage("selectedOption");
     }
 
     function addOrder() {
@@ -1031,7 +840,7 @@
         }
         updatePesananButton();
         // Setelah menambahkan pesanan, kembali ke halaman Menu
-        showPage("selectedOption");
+        showPage("menu");
       }
     }
 
@@ -1149,16 +958,18 @@
     }
 
     function backToMenuFromSummary() {
-      showPage("selectedOption");
+      showPage("menu");
       updatePesananButton();
     }
 
     function backToHomeFromSuccess() {
       // Reset proses pesanan
       orders = [];
-      selectedOptionText = "";
       updatePesananButton();
-      showPage("home");
+      showPage("landing");
+      // Reset input nama
+      document.getElementById("orderNameInput").value = "";
+      document.getElementById("btnLanjut").disabled = true;
     }
 
     window.onload = function() {
