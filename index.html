@@ -495,6 +495,10 @@
       font-weight: 500;
     }
 
+    .footer p {
+      margin: 5px 0;
+    }
+
     /* Animations */
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -647,28 +651,22 @@
       <p>Silakan pilih menu makanan dari daftar berikut:</p>
 
       <div class="menu-grid">
-        <div class="menu-item" onclick="selectMenu('Dimsum isi 4', 13000)">
+        <div class="menu-item" onclick="selectMenu('Dimsum Mentai isi 4', 16000)">
           <i class="fas fa-drumstick-bite menu-icon"></i>
-          <div class="menu-name">Dimsum isi 4</div>
+          <div class="menu-name">Dimsum Mentai isi 4</div>
           <div class="menu-description"></div>
-          <div class="menu-price">Rp. 13.000</div>
+          <div class="menu-price">Rp. 16.000</div>
         </div>
-        <div class="menu-item" onclick="selectMenu('Dimsum isi 6', 15000)">
+        <div class="menu-item" onclick="selectMenu('Dimsum Mentai isi 6', 24000)">
           <i class="fas fa-drumstick-bite menu-icon"></i>
-          <div class="menu-name">Dimsum isi 6</div>
+          <div class="menu-name">Dimsum Mentai isi 6</div>
           <div class="menu-description"></div>
-          <div class="menu-price">Rp. 15.000</div>
-        </div>
-        <div class="menu-item" onclick="selectMenu('Dimsum isi 8', 18000)">
-          <i class="fas fa-drumstick-bite menu-icon"></i>
-          <div class="menu-name">Dimsum isi 8</div>
-          <div class="menu-description"></div>
-          <div class="menu-price">Rp. 18.000</div>
+          <div class="menu-price">Rp. 24.000</div>
         </div>
         <div class="menu-item" onclick="selectMenu('Mie dan Dimsum Mentai', 15000)">
           <i class="fas fa-utensils menu-icon"></i>
           <div class="menu-name">Mie dan Dimsum Mentai</div>
-          <div class="menu-description">Isi 6 dimsum dan mie</div>
+          <div class="menu-description">Mie + Dimsum Mentai</div>
           <div class="menu-price">Rp. 15.000</div>
         </div>
       </div>
@@ -745,7 +743,8 @@
 
   <!-- Footer -->
   <div class="footer">
-    Pre-Order 27-31 Oktober 2025
+    <p>Pre-Order 27-31 Oktober 2025</p>
+    <p>Free Chilli Oil</p>
   </div>
 
   <!-- Tombol Pesananmu Fixed (selalu di bawah layar jika ada pesanan) -->
