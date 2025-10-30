@@ -770,7 +770,7 @@
       </div>
       <div class="input-group">
         <div class="input-label">Catatan (opsional)</div>
-        <textarea id="itemNote" class="input-field" placeholder="Tambahkan catatan untuk pesanan ini" rows="3"></textarea>
+        <textarea id="itemNote" class="input-field" placeholder="Tambahkan catatan untuk pesanan ini (opsional)" rows="3"></textarea>
       </div>
       <button class="btn btn-primary" onclick="addOrder()">
         <i class="fas fa-cart-plus"></i> Tambah ke Pesanan
@@ -998,7 +998,7 @@
             </div>
           </div>
           <div class="input-group" style="margin-top: 10px;">
-            <textarea class="note-input" placeholder="Tambahkan catatan untuk item ini" 
+            <textarea class="note-input" placeholder="Tambahkan catatan untuk item ini (opsional)" 
                 onchange="updateNote(${index}, this.value)">${order.note || ''}</textarea>
           </div>
         `;
