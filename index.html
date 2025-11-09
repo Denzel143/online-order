@@ -678,6 +678,75 @@
       margin-right: 8px;
       color: var(--primary);
     }
+
+    /* Overlay Confirmation Styles */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .overlay.active {
+      display: flex;
+    }
+
+    .confirmation-card {
+      background-color: var(--surface);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      animation: fadeInDown 0.3s ease;
+    }
+
+    .confirmation-icon {
+      font-size: 50px;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .confirmation-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--text);
+    }
+
+    .confirmation-message {
+      color: var(--text-light);
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .confirmation-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .confirmation-buttons .btn {
+      flex: 1;
+      margin: 0;
+    }
+
+    .btn-cancel {
+      background-color: #f5f5f5;
+      color: var(--text);
+    }
+
+    .btn-cancel:hover {
+      background-color: #eeeeee;
+    }
   </style>
 
   <!-- Firebase SDK (Compat) dan Konfigurasi Firebase -->
@@ -898,7 +967,7 @@
         <button class="btn btn-back" onclick="backToMenuFromSummary()">
           <i class="fas fa-arrow-left"></i> Kembali ke Menu
         </button>
-        <button id="btnKirim" class="btn btn-secondary" onclick="sendOrderNow()">
+        <button id="btnKirim" class="btn btn-secondary" onclick="showConfirmationOverlay()">
           <i class="fas fa-paper-plane"></i> Kirim Pesanan
         </button>
       </div>
@@ -920,6 +989,25 @@
         <p>Terima kasih telah memesan di Kedai Hioko Graha Padma.</p>
         <button class="btn btn-primary" onclick="backToHomeFromSuccess()">
           <i class="fas fa-home"></i> Kembali ke Halaman Utama
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay Konfirmasi Pengiriman -->
+  <div id="confirmationOverlay" class="overlay">
+    <div class="confirmation-card">
+      <i class="fas fa-exclamation-circle confirmation-icon"></i>
+      <div class="confirmation-title">Konfirmasi Pengiriman Pesanan</div>
+      <div class="confirmation-message">
+        Pastikan semua pesanan anda sudah benar sebelum dikirim. Pesanan yang sudah terkirim tidak dapat dibatalkan.
+      </div>
+      <div class="confirmation-buttons">
+        <button class="btn btn-cancel" onclick="hideConfirmationOverlay()">
+          <i class="fas fa-times"></i> Batal
+        </button>
+        <button class="btn btn-secondary" onclick="sendOrderNow()">
+          <i class="fas fa-paper-plane"></i> Kirim
         </button>
       </div>
     </div>
@@ -1115,7 +1203,20 @@
       updatePesananButton();
     }
 
+    // Fungsi untuk menampilkan overlay konfirmasi
+    function showConfirmationOverlay() {
+      document.getElementById("confirmationOverlay").classList.add("active");
+    }
+
+    // Fungsi untuk menyembunyikan overlay konfirmasi
+    function hideConfirmationOverlay() {
+      document.getElementById("confirmationOverlay").classList.remove("active");
+    }
+
     function sendOrderNow() {
+      // Sembunyikan overlay konfirmasi
+      hideConfirmationOverlay();
+      
       let total = orders.reduce((sum, order) => sum + order.total, 0);
       // Format tanggal dd/mm/yyyy
       const today = new Date();
