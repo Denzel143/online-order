@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kedai Hioko Graha Padma - Pesanan Terkirim</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FFC107;
+      --primary-dark: #FFA000;
+      --primary-light: #FFECB3;
+      --secondary: #4CAF50;
+      --accent: #FF5722;
+      --text: #333333;
+      --text-light: #757575;
+      --background: #FFF9E6;
+      --surface: #FFFFFF;
+      --border: #E0E0E0;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .logo-icon {
+      font-size: 32px;
+      margin-right: 10px;
+      color: white;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 90%;
+      margin: 100px auto 40px;
+      padding: 20px;
+    }
+
+    .page {
+      background-color: var(--surface);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 30px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .success-state {
+      text-align: center;
+      padding: 40px 20px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .success-icon {
+      font-size: 80px;
+      color: var(--secondary);
+      margin-bottom: 20px;
+    }
+
+    .success-text {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .order-details {
+      background-color: var(--primary-light);
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .detail-label {
+      font-weight: 500;
+    }
+
+    .detail-value {
+      font-weight: 600;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 16px;
+      font-weight: 500;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 8px rgba(255, 173, 0, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(255, 173, 0, 0.4);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <i class="fas fa-bowl-food logo-icon"></i>
+      <div class="logo-text">Kedai Hioko Graha Padma</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page">
+      <div class="success-state">
+        <i class="fas fa-check-circle success-icon"></i>
+        <div class="success-text" id="successMessage">Pesanan Berhasil Dikirim!</div>
+        
+        <div class="order-details" id="orderDetails">
+          <!-- Detail pesanan akan dimuat di sini -->
+        </div>
+        
+        <p>Terima kasih telah memesan di Kedai Hioko Graha Padma. Pesanan Anda sedang diproses.</p>
+        
+        <button class="btn btn-primary" onclick="backToHome()">
+          <i class="fas fa-home"></i> Kembali ke Halaman Utama
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Muat data pesanan terakhir dari localStorage
+    window.onload = function() {
+      const lastOrder = JSON.parse(localStorage.getItem('lastOrder') || '{}');
+      
+      if (lastOrder.total && lastOrder.orderName) {
+        document.getElementById('successMessage').textContent = `Pesanan ${lastOrder.orderName} Berhasil Dikirim!`;
+        
+        const orderDetails = document.getElementById('orderDetails');
+        orderDetails.innerHTML = `
+          <div class="detail-row">
+            <span class="detail-label">Nama Pemesan:</span>
+            <span class="detail-value">${lastOrder.orderName}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Jumlah Item:</span>
+            <span class="detail-value">${lastOrder.orderCount || 'Tidak diketahui'} item</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Total Pembayaran:</span>
+            <span class="detail-value">Rp. ${lastOrder.total.toLocaleString('id-ID')}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Status:</span>
+            <span class="detail-value" style="color: var(--secondary);">Menunggu Konfirmasi</span>
+          </div>
+          <div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border);">
+            <small>Pesanan telah dikirim ke sistem. Silakan tunggu konfirmasi dari kasir.</small>
+          </div>
+        `;
+      } else {
+        window.location.href = 'index.html';
+      }
+    };
+
+    function backToHome() {
+      // Hapus data pesanan terakhir dari localStorage
+      localStorage.removeItem('lastOrder');
+      // Redirect ke halaman utama (input nama)
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

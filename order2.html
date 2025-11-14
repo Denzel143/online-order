@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kedai Hioko Graha Padma - Pilih Opsi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FFC107;
+      --primary-dark: #FFA000;
+      --primary-light: #FFECB3;
+      --secondary: #4CAF50;
+      --accent: #FF5722;
+      --text: #333333;
+      --text-light: #757575;
+      --background: #FFF9E6;
+      --surface: #FFFFFF;
+      --border: #E0E0E0;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .logo-icon {
+      font-size: 32px;
+      margin-right: 10px;
+      color: white;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .page {
+      background-color: var(--surface);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 25px;
+      margin-bottom: 20px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .customer-info {
+      background-color: var(--primary-light);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .option-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin: 40px 0;
+    }
+
+    .option-card {
+      background: white;
+      border-radius: 16px;
+      padding: 30px 25px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 160, 0, 0.1));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .option-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .option-card:hover::before {
+      opacity: 1;
+    }
+
+    .option-card.selected {
+      border-color: var(--primary);
+      background-color: var(--primary-light);
+      box-shadow: 0 8px 20px rgba(255, 173, 0, 0.2);
+    }
+
+    .option-card.selected::before {
+      opacity: 1;
+    }
+
+    .option-icon-wrapper {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary-light));
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .option-icon {
+      font-size: 50px;
+      color: var(--primary-dark);
+      z-index: 2;
+    }
+
+    .option-name {
+      font-weight: 600;
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .takeaway-illustration {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      opacity: 0.1;
+      transform: rotate(-15deg);
+      font-size: 80px;
+      color: var(--primary);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 16px;
+      font-weight: 500;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 8px rgba(255, 173, 0, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(255, 173, 0, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .btn-back {
+      background-color: #f5f5f5;
+      color: var(--text);
+    }
+
+    .btn-back:hover {
+      background-color: #eeeeee;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .option-selector {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .option-card {
+        padding: 20px 15px;
+      }
+
+      .option-icon-wrapper {
+        width: 80px;
+        height: 80px;
+      }
+
+      .option-icon {
+        font-size: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <i class="fas fa-bowl-food logo-icon"></i>
+      <div class="logo-text">Kedai Hioko Graha Padma</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page">
+      <div class="customer-info" id="customerInfo">
+        <!-- Nama pelanggan akan dimuat di sini -->
+      </div>
+
+      <h2 style="text-align: center;">Pilih Opsi Makan</h2>
+
+      <div class="option-selector">
+        <div class="option-card" onclick="selectOption('Makan di tempat')">
+          <div class="option-icon-wrapper">
+            <i class="fas fa-store option-icon"></i>
+          </div>
+          <div class="option-name">Makan di Tempat</div>
+          <div class="takeaway-illustration">
+            <i class="fas fa-chair"></i>
+          </div>
+        </div>
+        <div class="option-card" onclick="selectOption('Bawa pulang')">
+          <div class="option-icon-wrapper">
+            <i class="fas fa-shopping-bag option-icon"></i>
+          </div>
+          <div class="option-name">Bawa Pulang</div>
+          <div class="takeaway-illustration">
+            <i class="fas fa-home"></i>
+          </div>
+        </div>
+      </div>
+
+      <button id="btnLanjut" class="btn btn-primary" disabled onclick="proceedToMenu()">
+        <i class="fas fa-arrow-right"></i> Lanjut ke Menu
+      </button>
+
+      <button class="btn btn-back" onclick="backToName()">
+        <i class="fas fa-arrow-left"></i> Kembali ke Input Nama
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let selectedOption = '';
+
+    // Muat nama pelanggan dari localStorage
+    window.onload = function() {
+      const orderName = localStorage.getItem('orderName');
+      if (orderName) {
+        document.getElementById('customerInfo').textContent = `Pesanan untuk: ${orderName}`;
+      } else {
+        // Jika tidak ada nama, redirect ke halaman 1
+        window.location.href = 'index.html';
+      }
+    };
+
+    function selectOption(option) {
+      selectedOption = option;
+      
+      // Update tampilan kartu yang dipilih
+      document.querySelectorAll('.option-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      event.currentTarget.classList.add('selected');
+      
+      // Aktifkan tombol lanjut
+      document.getElementById('btnLanjut').disabled = false;
+    }
+
+    function proceedToMenu() {
+      if (selectedOption) {
+        // Simpan opsi di localStorage
+        localStorage.setItem('selectedOption', selectedOption);
+        // Redirect ke halaman menu
+        window.location.href = 'order3.html';
+      }
+    }
+
+    function backToName() {
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
