@@ -192,6 +192,22 @@
       btnLanjut.disabled = orderNameInput.value.trim() === "";
     });
 
+    // --- PERUBAHAN DIMULAI DI SINI ---
+    // Menambahkan listener untuk tombol 'Enter' pada keyboard
+    orderNameInput.addEventListener("keydown", function(event) {
+      // Memeriksa apakah tombol yang ditekan adalah 'Enter' (key code 13 atau key "Enter")
+      if (event.key === "Enter") {
+        // Mencegah perilaku default (misalnya, jika input ada di dalam <form>)
+        event.preventDefault();
+        
+        // Hanya jalankan fungsi jika tombol "Lanjut" tidak dalam keadaan disabled
+        if (!btnLanjut.disabled) {
+          proceedToHome();
+        }
+      }
+    });
+    // --- PERUBAHAN SELESAI ---
+
     function proceedToHome() {
       const orderName = orderNameInput.value.trim();
       if (orderName !== "") {
